@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>To Do List</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #9b59b6; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  
+  .main-container {     
+  width: 80%;
+  padding: 25% 0; /* Adjust this value to maintain the square shape */
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 0 auto; /* Center the container */
+}
+  
+  table {
+    width: 0%;
+    border-collapse: collapse;
+    margin: 0 auto; /* Center the table */
+  }
+  
+  th, td {
+    padding: 0px;
+    text-align: left;
+    border-bottom: 2px solid grey;
+  }
+  
+  .actions button {
+    margin-right: 5px;
+    cursor: pointer;
+  }
+  
+  .actions button:last-child {
+    margin-right: 0;
+  }
+</style>
+
+
+
+</head>
+<body>
+  <div class="main-container">
+  <div class="row d-tiex justify-content-center align-items-center h-100">
+    <div class="col col-lg-9 col-xl-7">
+      <div class="card rounded-3">
+        <div class="card-body p-4">
+          <center><h2 class="text-center my-3 pb-3">To Do App</h2></center>
+
+          <form method="POST" class="row row-cols-lg-auto g-3 justify-content-center align-items-center">
+            {% csrf_token %}
+            <div class="col-12">
+              <div class="form-outline">
+                <input type="text" id="form1" class="form-control" name="task" placeholder="Enter a task">
+                <br>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary">Add Task</button>
+            </div>
+          </form>
+          <br>
+          <button style="background: grey; color:antiquewhite;" type="submit" class="btn btn-primary">Logout</button>
+          <table class="table mb-4">
+            <thead>
+              <tr>
+                <th scope="col">Todo item</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for i in todos %}
+              <tr>
+                <td>{{i.todo_name}}</td>
+        
+                {% if i.status == True %}
+                  <td>Completed</td>
+                {% else %}
+                  <td>In progress</td>
+                {% endif %}    
+
+                <td>
+                  <a href="{% url 'delete-task' i.todo_name %}"><button type="button" class="btn btn-success">Delete</button></a>
+                  <a href="{% url 'update-task' i.todo_name %}"><button type="button" class="btn btn-success">Finished</button></a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>   
+  </div>
+</div>
+</body>
+</html>
